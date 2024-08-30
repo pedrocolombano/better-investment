@@ -13,7 +13,7 @@ import java.math.RoundingMode;
 
 @Slf4j
 @Service
-public class LCIStrategy implements InvestmentStrategy {
+public class LCIStrategyImpl implements InvestmentStrategy {
 
     @Override
     public InvestmentResultDto getResult(final InvestmentDto investment, BigDecimal cdiYield) {

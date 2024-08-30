@@ -4,6 +4,7 @@ import com.pedrocolombano.betterinvestment.model.dto.InvestmentDto;
 import com.pedrocolombano.betterinvestment.model.dto.InvestmentResultDto;
 import com.pedrocolombano.betterinvestment.model.enumerated.InvestmentType;
 import com.pedrocolombano.betterinvestment.strategy.InvestmentStrategy;
+import com.pedrocolombano.betterinvestment.util.NumberUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -16,18 +17,16 @@ public class LCIStrategy implements InvestmentStrategy {
 
     @Override
     public InvestmentResultDto getResult(final InvestmentDto investment, BigDecimal cdiYield) {
-        BigDecimal investmentReturn = getInvestmentReturn(investment.getAmount(), cdiYield, investment.getLciYield());
+        BigDecimal investmentReturn = getInvestmentReturn(investment, cdiYield, investment.getLciYield());
         return new InvestmentResultDto(investment, investmentReturn);
     }
 
-    private BigDecimal getInvestmentReturn(final BigDecimal amount, final BigDecimal cdiYield, final BigDecimal lciYield) {
-        BigDecimal percentageDivisor = BigDecimal.valueOf(100);
+    private BigDecimal getInvestmentReturn(final InvestmentDto investment, final BigDecimal cdiYield, final BigDecimal lciYield) {
+        BigDecimal investmentYield = NumberUtil.getValueByPercentage(cdiYield, lciYield, 4);
+        BigDecimal totalInvestmentYield = NumberUtil.getSummedMonthlyValueByPeriod(investmentYield, investment.getStartDate(), investment.getEndDate());
 
-        BigDecimal investmentYield = cdiYield.multiply(lciYield)
-                                             .divide(percentageDivisor, RoundingMode.DOWN);
-
-        return amount.multiply(investmentYield)
-                     .divide(percentageDivisor, RoundingMode.HALF_DOWN);
+        return investment.getAmount().multiply(totalInvestmentYield)
+                                     .divide(NumberUtil.ONE_HUNDRED, RoundingMode.HALF_DOWN);
     }
 
     @Override

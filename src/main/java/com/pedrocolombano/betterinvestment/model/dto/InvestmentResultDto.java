@@ -36,7 +36,11 @@ public class InvestmentResultDto {
         return amount.setScale(4, RoundingMode.HALF_DOWN);
     }
 
-    public BigDecimal getInvestmentReturn() {
+    public BigDecimal getMonthlyReturn() {
+        return monthlyReturn.setScale(4, RoundingMode.HALF_DOWN);
+    }
+
+    public BigDecimal getYearlyReturn() {
         return yearlyReturn.setScale(4, RoundingMode.HALF_DOWN);
     }
 }

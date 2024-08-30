@@ -22,7 +22,7 @@ public class InvestmentService {
     public List<InvestmentResultDto> getInvestmentResults(final List<InvestmentDto> investments) {
         return investments.stream()
                           .map(this::getResult)
-                          .sorted(Comparator.comparing(InvestmentResultDto::getInvestmentReturn,
+                          .sorted(Comparator.comparing(InvestmentResultDto::getYearlyReturn,
                                  (inv1, inv2) -> -inv1.compareTo(inv2)))
                           .toList();
     }

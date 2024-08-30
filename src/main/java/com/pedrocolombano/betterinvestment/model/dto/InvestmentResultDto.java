@@ -17,16 +17,19 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class InvestmentResultDto {
 
-    private BigDecimal yield;
+    private String bank;
+    private String name;
     private BigDecimal amount;
-    private BigDecimal investmentReturn;
+    private BigDecimal monthlyReturn;
+    private BigDecimal yearlyReturn;
     private InvestmentType investmentType;
     private LocalDate startDate;
     private LocalDate endDate;
 
     public InvestmentResultDto(InvestmentDto investment, BigDecimal investmentReturn) {
         BeanUtils.copyProperties(investment, this);
-        this.investmentReturn = investmentReturn;
+        this.yearlyReturn = investmentReturn;
+        this.monthlyReturn = investmentReturn.divide(BigDecimal.valueOf(12), 4, RoundingMode.HALF_DOWN);
     }
 
     public BigDecimal getAmount() {
@@ -34,6 +37,6 @@ public class InvestmentResultDto {
     }
 
     public BigDecimal getInvestmentReturn() {
-        return investmentReturn.setScale(4, RoundingMode.HALF_DOWN);
+        return yearlyReturn.setScale(4, RoundingMode.HALF_DOWN);
     }
 }

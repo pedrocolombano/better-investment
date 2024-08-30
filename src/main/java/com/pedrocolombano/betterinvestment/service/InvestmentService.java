@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -21,6 +22,8 @@ public class InvestmentService {
     public List<InvestmentResultDto> getInvestmentResults(final List<InvestmentDto> investments) {
         return investments.stream()
                           .map(this::getResult)
+                          .sorted(Comparator.comparing(InvestmentResultDto::getInvestmentReturn,
+                                 (inv1, inv2) -> -inv1.compareTo(inv2)))
                           .toList();
     }
 

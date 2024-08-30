@@ -15,6 +15,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class InvestmentDto {
 
+    private String bank;
+    private String name;
     private BigDecimal amount;
     private BigDecimal cdbYield;
     private BigDecimal lciYield;

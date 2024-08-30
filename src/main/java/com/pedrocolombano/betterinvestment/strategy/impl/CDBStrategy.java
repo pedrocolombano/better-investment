@@ -19,7 +19,14 @@ public class CDBStrategy implements InvestmentStrategy {
         double incomeTax = IncomeTaxUtil.getIncomeTaxByDaysDifference(investment.getStartDate(), investment.getEndDate());
         double financialOperationTax = FinancialOperationTaxUtil.getTaxByDaysDifference(investment.getStartDate(), investment.getEndDate());
 
-        BigDecimal cdiDifference = cdiYield.multiply(investment.getCdbYield()).divide(BigDecimal.valueOf(100), RoundingMode.HALF_DOWN);
+        BigDecimal percentageDivisor = BigDecimal.valueOf(100);
+
+        BigDecimal calculatedCdbYield = investment.getCdbYield()
+                                                  .divide(percentageDivisor, RoundingMode.HALF_DOWN);
+
+        BigDecimal cdiDifference = cdiYield.multiply(calculatedCdbYield)
+                                           .divide(percentageDivisor, RoundingMode.HALF_DOWN);
+
         BigDecimal cdbYield = cdiYield.add(cdiDifference);
         BigDecimal investmentReturn = getInvestmentReturn(investment.getAmount(), cdbYield, incomeTax, financialOperationTax);
 

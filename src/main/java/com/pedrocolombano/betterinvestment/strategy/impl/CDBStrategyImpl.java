@@ -3,17 +3,22 @@ package com.pedrocolombano.betterinvestment.strategy.impl;
 import com.pedrocolombano.betterinvestment.model.dto.InvestmentDto;
 import com.pedrocolombano.betterinvestment.model.dto.InvestmentResultDto;
 import com.pedrocolombano.betterinvestment.model.enumerated.InvestmentType;
+import com.pedrocolombano.betterinvestment.service.YieldService;
 import com.pedrocolombano.betterinvestment.strategy.InvestmentStrategy;
 import com.pedrocolombano.betterinvestment.util.FinancialOperationTaxUtil;
 import com.pedrocolombano.betterinvestment.util.IncomeTaxUtil;
 import com.pedrocolombano.betterinvestment.util.NumberUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 @Service
+@RequiredArgsConstructor
 public class CDBStrategyImpl implements InvestmentStrategy {
+
+    private final YieldService yieldService;
 
     @Override
     public InvestmentResultDto getResult(final InvestmentDto investment, final BigDecimal cdiYield) {
@@ -34,7 +39,7 @@ public class CDBStrategyImpl implements InvestmentStrategy {
                                            final double incomeTax,
                                            final double financialOperationTax) {
 
-        BigDecimal totalCdbYield = NumberUtil.getSummedMonthlyValueByPeriod(cdbYield, investment.getStartDate(), investment.getEndDate());
+        BigDecimal totalCdbYield = yieldService.sumMonthlyYieldByPeriod(cdbYield, investment.getStartDate(), investment.getEndDate());
         BigDecimal grossInvestmentReturn =  NumberUtil.getValueByPercentage(investment.getAmount(), totalCdbYield, 4);
         BigDecimal incomeTaxValue = NumberUtil.getValueByPercentage(grossInvestmentReturn, incomeTax, 2);
         BigDecimal financialOperationTaxValue = NumberUtil.getValueByPercentage(grossInvestmentReturn, financialOperationTax, 2);

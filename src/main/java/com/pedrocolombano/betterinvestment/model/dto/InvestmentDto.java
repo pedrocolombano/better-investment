@@ -20,6 +20,7 @@ public class InvestmentDto {
     private BigDecimal amount;
     private BigDecimal cdbYield;
     private BigDecimal lciYield;
+    private BigDecimal selicYield;
     private LocalDate startDate;
     private LocalDate endDate;
     private InvestmentType investmentType;

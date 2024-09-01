@@ -20,8 +20,4 @@ public class NumberUtil {
         return getValueByPercentage(value, BigDecimal.valueOf(percentage), scale);
     }
 
-    public static BigDecimal getValueByPercentage(final BigDecimal value, final BigDecimal percentage) {
-        return getValueByPercentage(value, percentage, 2);
-    }
-
 }

@@ -43,4 +43,9 @@ public class InvestmentResultDto {
     public BigDecimal getYearlyReturn() {
         return yearlyReturn.setScale(4, RoundingMode.HALF_DOWN);
     }
+
+    public BigDecimal getFinalAmount() {
+        return amount.add(yearlyReturn)
+                     .setScale(4, RoundingMode.HALF_DOWN);
+    }
 }
